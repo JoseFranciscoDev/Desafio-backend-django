@@ -68,9 +68,9 @@ A autenticação é feita utilizando o Simple JWT, e você precisará do token g
 | Método | Rota                       | Descrição                                                      |
 |--------|----------------------------|---------------------------------------------------------------|
 | GET    | /api/users/                 | Lista todos os usuários registrados no sistema.               |
-| GET    | /api/users/<id>/            | Retorna as informações de um usuário específico, identificado pelo <id>. |
+| GET    | /api/users/id/            | Retorna as informações de um usuário específico, identificado pelo id. |
 | POST   | /api/users/                 | Cria um novo usuário. Você precisará enviar os dados do usuário no corpo da requisição. |
-| DELETE | /api/users/<id>/            | Remove um usuário específico, identificado pelo <id>.         |
+| DELETE | /api/users/id/            | Remove um usuário específico, identificado pelo id.         |
 
 Os endpoints de usuários permitem gerenciar as informações de usuários, seja para visualizar, adicionar ou remover.
 
@@ -80,11 +80,11 @@ Os endpoints de usuários permitem gerenciar as informações de usuários, seja
 
 | Método | Rota                                    | Descrição                                                      |
 |--------|-----------------------------------------|---------------------------------------------------------------|
-| GET    | /api/users/<user_id>/tasks/             | Lista todas as tarefas de um usuário, identificadas pelo <user_id>. |
-| GET    | /api/users/<user_id>/tasks/?status=<status> | Filtra as tarefas do usuário com base no status (pendente, concluída, etc.). Exemplo de uso: status=pendente. |
+| GET    | /api/users/user_id/tasks/             | Lista todas as tarefas de um usuário, identificadas pelo user_id. |
+| GET    | /api/users/user_id/tasks/?status=<status> | Filtra as tarefas do usuário com base no status (pendente, concluída, etc.). Exemplo de uso: status=pendente. |
 | POST   | /api/tasks/                             | Cria uma nova tarefa. Envie as informações da tarefa no corpo da requisição. |
-| PATCH  | /api/tasks/<id>/                        | Atualiza uma tarefa específica, identificada pelo <id>. O corpo da requisição deve conter os dados a serem atualizados. |
-| DELETE | /api/tasks/<id>/                        | Deleta uma tarefa específica, identificada pelo <id>.         |
+| PATCH  | /api/tasks/id/                        | Atualiza uma tarefa específica, identificada pelo id. O corpo da requisição deve conter os dados a serem atualizados. |
+| DELETE | /api/tasks/id/                        | Deleta uma tarefa específica, identificada pelo id.         |
 
 Os endpoints de tarefas permitem o gerenciamento completo das tarefas de um usuário, incluindo a filtragem por status, criação, atualização e exclusão.
 
