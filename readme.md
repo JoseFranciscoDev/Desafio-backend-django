@@ -15,7 +15,7 @@ Esta API permite o gerenciamento de tarefas e de usuários. Com ela, é possíve
 
 ### 🔧 1. Clone o repositório
 ```sh
-git clone https://github.com/seu-usuario/desafio-backend-django.git
+git clone https://github.com/JoseFranciscoDev/Desafio-backend-django.git
 cd desafio-backend-django
 ```
 
