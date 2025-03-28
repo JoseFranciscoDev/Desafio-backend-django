@@ -10,7 +10,7 @@ urlpatterns = [
     
     #endpoints tasks
     path('tasks/', views.get_tasks, name='get_tasks',),  # Lista todas as tasks
-    path('tasks/<int:id>/', views.get_task_by_id, name='get_task'),  # Busca uma task pelo id_user
+    path('tasks/<int:id>/', views.get_task_by_id, name='get_task_by_id'),  # Busca uma task pelo id_user
     path('tasks/status/<str:status_task>/', views.get_tasks_by_status, name='get_tasks_by_status'), # Busca tasks pelo status
     path('tasks/create/', views.create_task, name='create_task'),  # Cria uma task
     path('tasks/update/<int:id>/', views.update_task, name='update_task'), # Atualizar task pelo ID
