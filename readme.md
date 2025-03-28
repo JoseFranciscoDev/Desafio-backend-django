@@ -1,12 +1,13 @@
 # 📌 API de Gerenciamento de Tarefas
 
 ## 📖 Sobre
-Esta API permite o gerenciamento de tarefas de usuários. Com ela, é possível criar, listar, atualizar e excluir tarefas, além de filtrar por status.
+Esta API permite o gerenciamento de tarefas e de usuários. Com ela, é possível criar, listar, atualizar e excluir tarefas, além de filtrar por status.
 
 ## 🚀 Tecnologias Utilizadas
 - Python 3
 - Django Rest Framework
-- SQLite (ou outro banco de dados configurável)
+- SQLite
+- Simple JWT
 
 ---
 
@@ -14,8 +15,8 @@ Esta API permite o gerenciamento de tarefas de usuários. Com ela, é possível 
 
 ### 🔧 1. Clone o repositório
 ```sh
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
-cd nome-do-repositorio
+git clone https://github.com/seu-usuario/desafio-backend-django.git
+cd desafio-backend-django
 ```
 
 ### 🐍 2. Crie e ative um ambiente virtual
@@ -87,5 +88,5 @@ Este projeto está sob a licença MIT. Sinta-se livre para usá-lo e modificá-l
 
 ---
 
-Feito com ❤️ por [Seu Nome](https://github.com/seu-usuario).
+Feito com ❤️ por [José Francisco](https://github.com/JoseFranciscoDev).
 
