@@ -2,32 +2,32 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.views import TokenObtainPairView
 
-
+from rest_framework.pagination import PageNumberPagination
 
 from .models import Task
 from .serializers import TaskSerializer, UserSerializer
 from .models import User
 
 #Views tasks:
-
 #listar todas as tasks:
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_tasks(request):
-        tasks = Task.objects.all()
-        serializer = TaskSerializer(tasks, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    user = request.user
+    tasks = Task.objects.filter(user = user)
+    serializer = TaskSerializer(tasks, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
     
 #buscar uma task pelo ID:
 @api_view(['GET'])
 def get_task_by_id(request, id):
-            try:
-                task = Task.objects.get(id = id)
-            except:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-            serializer = TaskSerializer(task)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+    try:
+        task = Task.objects.get(id = id)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = TaskSerializer(task)
+    return Response(serializer.data, status=status.HTTP_200_OK)
         
 #busca todas as tasks do usuario pelo user_id        
 @api_view(['GET'])
@@ -40,7 +40,7 @@ def get_tasks_by_user_id(request, user_id):
     serializer = TaskSerializer(list(tasks), many=True) 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-#buscar tasks por status
+#busca tasks por status
 @api_view(['GET'])
 def get_tasks_by_status(request, status_task):
     try:
@@ -50,17 +50,17 @@ def get_tasks_by_status(request, status_task):
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-#criar uma task:
+#criar uma task:    
 @api_view(['POST'])
 def create_task(request):
-        new_task = request.data
-        serializer = TaskSerializer(data = new_task)     
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer._errors)
-       
+    user = request.user  
+    new_task_data = request.data.copy() 
+    new_task_data['user'] = user.id
+    serializer = TaskSerializer(data=new_task_data)
+    if serializer.is_valid():
+        serializer.save(user=user)  # Salva a task associada ao usuário autenticado
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # atualizar uma task:
 @api_view(['PUT'])
@@ -106,15 +106,15 @@ def get_user_by_id(request, id):
 
 @api_view(['POST'])
 def create_user(request):
-        new_user = request.data
-        password = new_user.get('password')
-        serializer = UserSerializer(data = new_user)     
-        if serializer.is_valid():
-            user = serializer.save()
-            user.set_password(password)
-            user.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    new_user = request.data
+    password = new_user.get('password')
+    serializer = UserSerializer(data = new_user)     
+    if serializer.is_valid():
+        user = serializer.save()
+        user.set_password(password)
+        user.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
 def delete_user(request, id):
