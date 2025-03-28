@@ -1,7 +1,7 @@
 # 📌 API de Gerenciamento de Tarefas
 
 ## 📖 Sobre
-Esta API permite o gerenciamento de tarefas e de usuários. Com ela, é possível criar, listar, atualizar e excluir tarefas, além de filtrar por status.
+Esta API permite o gerenciamento de tarefas e usuários. Com ela, é possível criar, listar, atualizar e excluir tarefas, além de filtrá-las por status. A API oferece autenticação JWT, garantindo que apenas usuários autenticados possam interagir com a aplicação.
 
 ## 🚀 Tecnologias Utilizadas
 - Python 3
