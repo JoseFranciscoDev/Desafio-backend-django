@@ -50,31 +50,43 @@ python manage.py runserver
 A API estará disponível em `http://127.0.0.1:8000/`
 
 ---
+# 📡 Endpoints
 
-## 📡 Endpoints
+## 📍 Autenticação
 
-### 📍 Autenticação
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `POST` | `/api/token/` | Gera um token de acesso |
-| `POST` | `/api/token/refresh/` | Atualiza o token de acesso |
+| Método | Rota                | Descrição                                                         |
+|--------|----------------------|-------------------------------------------------------------------|
+| POST   | /api/token/           | Gera um token de acesso (necessário para autenticar as requisições) |
+| POST   | /api/token/refresh/   | Atualiza o token de acesso. Usado quando o token expira.          |
 
-### 📍 Usuários
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/api/users/` | Lista todos os usuários |
-| `GET` | `/api/users/<id>/` | Busca um usuário pelo ID |
-| `POST` | `/api/users/create/` | Cria um novo usuário |
-| `DELETE` | `/api/users/delete/<id>/` | Remove um usuário |
+A autenticação é feita utilizando o Simple JWT, e você precisará do token gerado para acessar endpoints protegidos.
 
-### 📍 Tarefas
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `GET` | `/api/users/<user_id>/tasks/` | Lista todas as tarefas de um usuário |
-| `GET` | `/api/users/<user_id>/tasks/?status=pendente` | Filtra tarefas pelo status |
-| `POST` | `/api/tasks/create/` | Cria uma nova tarefa |
-| `PATCH` | `/api/tasks/<id>/update/` | Atualiza uma tarefa |
-| `DELETE` | `/api/tasks/<id>/delete/` | Deleta uma tarefa |
+---
+
+## 📍 Usuários
+
+| Método | Rota                       | Descrição                                                      |
+|--------|----------------------------|---------------------------------------------------------------|
+| GET    | /api/users/                 | Lista todos os usuários registrados no sistema.               |
+| GET    | /api/users/<id>/            | Retorna as informações de um usuário específico, identificado pelo <id>. |
+| POST   | /api/users/                 | Cria um novo usuário. Você precisará enviar os dados do usuário no corpo da requisição. |
+| DELETE | /api/users/<id>/            | Remove um usuário específico, identificado pelo <id>.         |
+
+Os endpoints de usuários permitem gerenciar as informações de usuários, seja para visualizar, adicionar ou remover.
+
+---
+
+## 📍 Tarefas
+
+| Método | Rota                                    | Descrição                                                      |
+|--------|-----------------------------------------|---------------------------------------------------------------|
+| GET    | /api/users/<user_id>/tasks/             | Lista todas as tarefas de um usuário, identificadas pelo <user_id>. |
+| GET    | /api/users/<user_id>/tasks/?status=<status> | Filtra as tarefas do usuário com base no status (pendente, concluída, etc.). Exemplo de uso: status=pendente. |
+| POST   | /api/tasks/                             | Cria uma nova tarefa. Envie as informações da tarefa no corpo da requisição. |
+| PATCH  | /api/tasks/<id>/                        | Atualiza uma tarefa específica, identificada pelo <id>. O corpo da requisição deve conter os dados a serem atualizados. |
+| DELETE | /api/tasks/<id>/                        | Deleta uma tarefa específica, identificada pelo <id>.         |
+
+Os endpoints de tarefas permitem o gerenciamento completo das tarefas de um usuário, incluindo a filtragem por status, criação, atualização e exclusão.
 
 ---
 
