@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.shortcuts import get_object_or_404
+
 from rest_framework.pagination import PageNumberPagination
 
 from .models import Task
@@ -16,14 +18,19 @@ from .models import User
 def get_tasks(request):
     user = request.user
     tasks = Task.objects.filter(user = user)
-    serializer = TaskSerializer(tasks, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    paginator = PageNumberPagination()
+    paginator.page_size = 10 
+    result_page = paginator.paginate_queryset(tasks, request)
+    serializer = TaskSerializer(result_page, many=True)
+    return paginator.get_paginated_response(serializer.data) 
+
     
 #buscar uma task pelo ID:
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_task_by_id(request, id):
     try:
-        task = Task.objects.get(id = id)
+        task = get_object_or_404(Task, id=id, user=request.user)
     except:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = TaskSerializer(task)
@@ -31,6 +38,7 @@ def get_task_by_id(request, id):
         
 #busca todas as tasks do usuario pelo user_id        
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_tasks_by_user_id(request, user_id):
     status_task = request.GET['status']
     try:
@@ -42,6 +50,7 @@ def get_tasks_by_user_id(request, user_id):
 
 #busca tasks por status
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_tasks_by_status(request, status_task):
     try:
         tasks = Task.objects.filter(status = status_task).order_by('title')
@@ -52,9 +61,10 @@ def get_tasks_by_status(request, status_task):
 
 #criar uma task:    
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_task(request):
     user = request.user  
-    new_task_data = request.data.copy() 
+    new_task_data = request.data 
     new_task_data['user'] = user.id
     serializer = TaskSerializer(data=new_task_data)
     if serializer.is_valid():
@@ -64,6 +74,7 @@ def create_task(request):
 
 # atualizar uma task:
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def update_task(request, id):
     try:
         task = Task.objects.get(id = id)
@@ -76,6 +87,7 @@ def update_task(request, id):
     
 # deletar uma task:
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def delete_task(request, id):
     try:
         task = Task.objects.get(id = id)
@@ -88,6 +100,7 @@ def delete_task(request, id):
 
 #Views users:
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_users(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
@@ -95,6 +108,7 @@ def get_users(request):
    
 # buscar usuario pelo ID
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_user_by_id(request, id):
     try:     
         user = User.objects.get(id = id)
@@ -105,6 +119,7 @@ def get_user_by_id(request, id):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_user(request):
     new_user = request.data
     password = new_user.get('password')
@@ -117,6 +132,7 @@ def create_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def delete_user(request, id):
     try:
         user = User.objects.get(id = id)
